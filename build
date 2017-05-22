@@ -5,7 +5,7 @@ build() {
 
 	[[ "$BUILDER_IMAGE" ]] || {
 		BUILDER_IMAGE="alpine-builder"
-		docker build -t "$BUILDER_IMAGE" builder
+		docker build -t "$BUILDER_IMAGE" builder --no-cache
 	}
 
 	for file in $build_files; do
@@ -18,7 +18,7 @@ build() {
 			> "$version_dir/rootfs.tar.xz"
 
 		for tag in "${TAGS[@]}"; do
-			docker build -t "$tag" "$version_dir"
+			docker build -t "$tag" "$version_dir" --no-cache
 			if [[ "$CIRCLE_BUILD_NUM" ]]; then
 				{
 					mkdir -p images \
